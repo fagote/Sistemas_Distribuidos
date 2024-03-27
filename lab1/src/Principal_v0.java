@@ -112,17 +112,11 @@ public class Principal_v0 {
 	            System.out.println("Escreva a sua fortuna: ");
 	            String mensagem = scan.nextLine();
 				
-	            // Inicializa um FileWriter em modo de adição para adicionar ao final do arquivo
 	            FileWriter fileWriter = new FileWriter("src\\fortune-br.txt", true);
-
-	            // Inicializa um PrintWriter para escrever no arquivo
 	            PrintWriter printWriter = new PrintWriter(fileWriter);
 	            
-	            // Adiciona uma mensagem ao final do arquivo
 	            printWriter.print("\n%\n"+mensagem);
-	            //printWriter.println();
 
-	            // Fecha o PrintWriter e o FileWriter após a escrita
 	            printWriter.close();
 	            fileWriter.close();
 
