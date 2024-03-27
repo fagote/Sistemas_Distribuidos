@@ -1,9 +1,9 @@
 
 /**
- * Laboratorio 1 de Sistemas Distribuidos
+ * Laboratorio 2 de Sistemas Distribuidos
  * 
- * Autor: Lucio A. Rocha
- * Ultima atualizacao: 17/12/2022
+ * Autor: Ian Ferranti e Leonardo Fagote
+ * Ultima atualizacao: 25/03/2024
  */
 
 import java.io.BufferedReader;
