@@ -1,8 +1,8 @@
 /**
  * Laboratorio 3  
- * Autor: Lucio Agostinho Rocha
- * Ultima atualizacao: 04/04/2023
+ * Autor: Ian e Leonardo Fagote
  */
+
 import java.io.Serializable;
 
 public class Mensagem implements Serializable {
