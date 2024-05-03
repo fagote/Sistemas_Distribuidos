@@ -39,7 +39,6 @@ public class ClienteRMI {
             		//Monta a mensagem                		
             		System.out.print("Add fortune: ");
             		String fortune = leitura.nextLine();
-            		System.out.print(fortune);
             		
             		Mensagem mensagem = new Mensagem(fortune, opcao);
             		Mensagem resposta = stub.enviar(mensagem); //dentro da mensagem tem o campo 'write'
