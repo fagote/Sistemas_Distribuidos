@@ -1,7 +1,6 @@
 /**
  * Laboratorio 3  
- * Autores: Bruno Uhlmann Marcato e Thomas Oliveira Rocha Sampaio Silva
- * Ultima atualizacao: 11/10/2023
+ * Autor: Ian e Leonardo Fagote
  */
 
 import java.io.*;
