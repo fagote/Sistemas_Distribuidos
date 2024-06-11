@@ -1,8 +1,8 @@
 /**
  * Lab05: Sistema P2P
  * 
- * Autor: Lucio A. Rocha
- * Ultima atualizacao: 22/05/2023
+ * Autor: Ian Ferranti e leonardo Fagote
+ * Ultima atualizacao: 09/06/2024
  * 
  * Referencias: 
  * https://docs.oracle.com/javase/tutorial/essential/io
@@ -25,6 +25,11 @@ public enum PeerLista {
     PEER3 {
         public String getNome() {
             return "PEER3";
+        }        
+    },
+    PEER4 {
+        public String getNome() {
+            return "PEER4";
         }        
     };
     public String getNome(){
