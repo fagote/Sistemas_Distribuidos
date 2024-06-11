@@ -1,14 +1,13 @@
 /**
  * Lab05: Sistema P2P
  * 
- * Autor: Lucio A. Rocha
- * Ultima atualizacao: 22/05/2023
+ * Autor: Ian Ferranti e leonardo Fagote
+ * Ultima atualizacao: 09/06/2024
  * 
  * Referencias: 
  * https://docs.oracle.com/javase/tutorial/essential/io
  * http://fortunes.cat-v.org/
  */
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
