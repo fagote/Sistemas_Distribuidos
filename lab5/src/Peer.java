@@ -1,8 +1,8 @@
 /**
  * Lab05: Sistema P2P
  * 
- * Autor: Lucio A. Rocha
- * Ultima atualizacao: 22/05/2023
+ * Autor: Ian Ferranti e leonardo Fagote
+ * Ultima atualizacao: 09/06/2024
  * 
  * Referencias: 
  * https://docs.oracle.com/javase/tutorial/essential/io
@@ -16,6 +16,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Peer implements IMensagem{
     
@@ -73,72 +74,54 @@ public class Peer implements IMensagem{
 		return result;
 	}
     
-    public void iniciar(){
+    public void iniciar() {
+        Scanner leitura = null;
+        try {
+            // Cria uma lista de peers a partir do enum PeerLista
+            List<PeerLista> listaPeers = new ArrayList<>();
+            for (PeerLista peer : PeerLista.values()) {
+                listaPeers.add(peer);
+            }
 
-    try {
-    		//Adquire aleatoriamente um ID do PeerList
-    		List<PeerLista> listaPeers = new ArrayList<>();
-    		for( PeerLista peer : PeerLista.values())
-    			listaPeers.add(peer);
-    		
-    		Registry servidorRegistro;
-    		try {
-    			servidorRegistro = LocateRegistry.createRegistry(1099);
-    		} catch (java.rmi.server.ExportException e){ //Registro jah iniciado 
-    			System.out.print("Registro jah iniciado. Usar o ativo.\n");
-    		}
-    		servidorRegistro = LocateRegistry.getRegistry(); //Registro eh unico para todos os peers
-    		String [] listaAlocados = servidorRegistro.list();
-    		for(int i=0; i<listaAlocados.length;i++)
-    			System.out.println(listaAlocados[i]+" ativo.");
-    		
-    		SecureRandom sr = new SecureRandom();
-    		PeerLista peer = listaPeers.get(sr.nextInt(listaPeers.size()));
-    		
-    		int tentativas=0;
-    		boolean repetido = true; 
-    		boolean cheio = false;
-    		while(repetido && !cheio){
-    			repetido=false;    			
-    			peer = listaPeers.get(sr.nextInt(listaPeers.size()));
-    			for(int i=0; i<listaAlocados.length && !repetido; i++){
-    				
-    				if(listaAlocados[i].equals(peer.getNome())){
-    					System.out.println(peer.getNome() + " ativo. Tentando proximo...");
-    					repetido=true;
-    					tentativas=i+1;
-    				}    			  
-    				
-    			}
-    			//System.out.println(tentativas+" "+listaAlocados.length);
-    			    			
-    			//Verifica se o registro estah cheio (todos alocados)
-    			if(listaAlocados.length>0 && //Para o caso inicial em que nao ha servidor alocado,
-    					                     //caso contrario, o teste abaixo sempre serah true
-    				tentativas==listaPeers.size()){ 
-    				cheio=true;
-    			}
-    		}
-    		
-    		if(cheio){
-    			System.out.println("Sistema cheio. Tente mais tarde.");
-    			System.exit(1);
-    		}
-    		
-            IMensagem skeleton  = (IMensagem) UnicastRemoteObject.exportObject(this, 0); //0: sistema operacional indica a porta (porta anonima)            
-            	
-            servidorRegistro.rebind(peer.getNome(), skeleton);
-            System.out.print(peer.getNome() +" Servidor RMI: Aguardando conexoes...");
-                        
-            //---Cliente RMI
+            // Cria ou obtém o registro RMI na porta 1099
+            Registry servidorRegistro = LocateRegistry.createRegistry(1099);
+            servidorRegistro = LocateRegistry.getRegistry();
+
+            // Exibe os peers disponíveis para o usuário escolher
+            System.out.println("Escolha um Peer para iniciar o servidor:");
+            for (int i = 0; i < listaPeers.size(); i++) {
+                System.out.println((i + 1) + ") " + listaPeers.get(i).getNome());
+            }
+
+            // Lê a escolha do usuário com validação de entrada
+            leitura = new Scanner(System.in);
+            int escolha = 0;
+            while (escolha < 1 || escolha > listaPeers.size()) {
+                System.out.print("Digite o número do Peer desejado (1-" + listaPeers.size() + "): ");
+                if (leitura.hasNextInt()) {
+                    escolha = leitura.nextInt();
+                } else {
+                    leitura.next(); // Descarta a entrada inválida
+                    System.out.println("Entrada inválida. Por favor, digite um número entre 1 e " + listaPeers.size() + ".");
+                }
+            }
+
+            // Obtém o peer escolhido e registra o objeto RMI
+            PeerLista peerEscolhido = listaPeers.get(escolha - 1);
+            IMensagem skeleton = (IMensagem) UnicastRemoteObject.exportObject(this, 0);
+            servidorRegistro.rebind(peerEscolhido.getNome(), skeleton);
+            System.out.println(peerEscolhido.getNome() + " Servidor RMI: Aguardando conexões...");
+
+            // Inicia o cliente RMI
             new ClienteRMI().iniciarCliente();
-            
-            
-            
-        } catch(Exception e) {
-            e.printStackTrace();
-        }        
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (leitura != null) {
+                leitura.close();
+            }
+        }
     }
     
     public static void main(String[] args) {
